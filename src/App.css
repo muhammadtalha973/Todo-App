@@ -1,0 +1,5 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap');
+@theme {
+  --font-caveat: "Caveat Brush", cursive;
+}
