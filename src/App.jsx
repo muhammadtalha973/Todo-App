@@ -64,51 +64,50 @@ function App() {
   }
 
   return (
- <section className="w-full min-h-screen px-4 py-6 grid grid-cols-1 grid-rows-[auto_1fr] justify-items-center gap-y-8 font-caveat">
+    <section className="w-full min-h-screen px-4 py-6 grid grid-cols-1 grid-rows-[auto_1fr] justify-items-center gap-y-8 font-caveat">
+      <header className="w-full max-w-2xl h-60">
+        <img
+          src=".\src\assets\todolist-logo.png"
+          alt="todolist-logo"
+          className="max-w-full h-full object-contain"
+        />
+      </header>
 
-  <header className="w-full max-w-2xl h-60">
-    <img
-      src=".\src\assets\todolist-logo.png"
-      alt="todolist-logo"
-      className="max-w-full h-full object-contain"
-    />
-  </header>
+      <main className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="w-full max-h-84 bg-[#F6F4CC] rounded-3xl p-4 ">
+          <TodoInput
+            getInputText={getInputText}
+            addTask={addTask}
+            inputValue={inputValue}
+            editId={editId}
+            editTask ={editTask}
+          />
 
-  <main className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-6">
+          <TodoStats todoList={todoList} />
+        </div>
 
-    <div className="w-full max-h-84 bg-[#F6F4CC] rounded-3xl p-4 ">
-      <TodoInput
-        getInputText={getInputText}
-        addTask={addTask}
-        inputValue={inputValue}
-      />
+        <div className="w-full bg-[#F6F4CC] rounded-3xl p-4 max-h-100 overflow-y-auto">
+          <TodoFilter setFilterValue={setFilterValue} />
 
-      <TodoStats todoList={todoList} />
-    </div>
+          <SearchBar
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+          />
 
-    <div className="w-full bg-[#F6F4CC] rounded-3xl p-4 max-h-100 overflow-y-auto">
-      <TodoFilter setFilterValue={setFilterValue} />
-
-      <SearchBar
-        searchValue={searchValue}
-        setSearchValue={setSearchValue}
-      />
-
-      <TodoList
-        todoList={todoList}
-        deleteTask={deleteTask}
-        editTask={editTask}
-        editId={editId}
-        setEditId={setEditId}
-        searchValue={searchValue}
-        filterValue={filterValue}
-        setInputValue={setInputValue}
-        completeTask={completeTask}
-      />
-    </div>
-
-  </main>
-</section>
+          <TodoList
+            todoList={todoList}
+            deleteTask={deleteTask}
+            editTask={editTask}
+            editId={editId}
+            setEditId={setEditId}
+            searchValue={searchValue}
+            filterValue={filterValue}
+            setInputValue={setInputValue}
+            completeTask={completeTask}
+          />
+        </div>
+      </main>
+    </section>
   );
 }
 
