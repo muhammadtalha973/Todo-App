@@ -28,18 +28,18 @@ export default function TodoItem({
           type="checkbox"
           name="checkbox"
           checked={task.completed}
-          onChange={() => completeTask(task.id)}
+          onChange={() => completeTask(task._id)}
         />
         <button
           className="w-10 h-8 bg-white text-md  rounded-2xl border border-black text-[#D21111] font-bold"
-          onClick={() => deleteTask(task.id)}
+          onClick={() => deleteTask(task._id)}
         >
           ✗
         </button>
         <button
           className="w-10 h-8 bg-white  rounded-2xl border border-black"
           onClick={() => {
-            setEditId(task.id);
+            setEditId(task._id);
             setInputValue(task.task);
           }}
         >

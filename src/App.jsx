@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import TodoInput from "./components/TodoInput";
 import TodoFilter from "./components/TodoFilters";
@@ -12,55 +12,111 @@ function App() {
   const [searchValue, setSearchValue] = useState("");
   const [filterValue, setFilterValue] = useState("all");
   const [editId, setEditId] = useState(null);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/tasks")
+      .then((response) => response.json())
+      .then((data) => {
+        setTodoList(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   function getInputText(event) {
     setInputValue(event.target.value);
   }
-  function addTask() {
+  async function addTask() {
     if (inputValue.trim() !== "") {
-      setTodoList([
-        ...todoList,
-        {
-          id: Date.now(),
-          task: inputValue.trim(),
-          completed: false,
-        },
-      ]);
-
-      setInputValue("");
+      try {
+        const response = await fetch("http://localhost:5000/api/tasks", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            task: inputValue.trim(),
+          }),
+        });
+        const newTodo = await response.json();
+        setTodoList([...todoList, newTodo]);
+        setInputValue("");
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 
-  function deleteTask(id) {
-    let newArray = todoList.filter((task) => task.id !== id);
-    setTodoList(newArray);
+  async function deleteTask(id) {
+    try {
+      const response = await fetch(`http://localhost:5000/api/tasks/${id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error("failed to delete task");
+      }
+      setTodoList((currentTodos) =>
+        currentTodos.filter((task) => task._id !== id),
+      );
+    } catch (error) {
+      console.log(error);
+    }
   }
-  function completeTask(id) {
-    const newArray = todoList.map((task) => {
-      if (task.id === id) {
-        return {
-          ...task,
+  async function completeTask(id) {
+    try {
+      const task = todoList.find((task) => task._id === id);
+      if (!task) {
+        return;
+      }
+      const response = await fetch(`http://localhost:5000/api/tasks/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
           completed: !task.completed,
-        };
+        }),
+      });
+      if (!response.ok) {
+        throw new Error("failed to update task");
       }
-      return task;
-    });
-
-    setTodoList(newArray);
+      const updatedTodo = await response.json();
+      setTodoList((currentTodos) =>
+        currentTodos.map((task) => (task._id === id ? updatedTodo : task)),
+      );
+    } catch (error) {
+      console.log(error);
+    }
   }
-  function editTask() {
-    const editArray = todoList.map((task) => {
-      if (task.id === editId) {
-        return {
-          ...task,
-          task: inputValue.trim(),
-        };
+  async function editTask() {
+    if (inputValue.trim() === "") {
+      return;
+    }
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/tasks/${editId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            task: inputValue.trim(),
+          }),
+        },
+      );
+      if (!response.ok) {
+        throw new Error("failed to update task");
       }
-      return task;
-    });
-
-    setTodoList(editArray);
-    setInputValue("");
-    setEditId(null);
+      const updatedTodo = await response.json();
+      setTodoList((currentTodos) =>
+        currentTodos.map((task) => (task._id === editId ? updatedTodo : task)),
+      );
+      setInputValue("");
+      setEditId(null);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -80,7 +136,7 @@ function App() {
             addTask={addTask}
             inputValue={inputValue}
             editId={editId}
-            editTask ={editTask}
+            editTask={editTask}
           />
 
           <TodoStats todoList={todoList} />
