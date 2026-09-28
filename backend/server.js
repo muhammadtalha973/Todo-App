@@ -9,7 +9,9 @@ const Todo = require("./models/Todo");
 const app = express();
 
 connectDB();
-app.use(cors());
+app.use(cors({
+  origin: "https://todo-app-otyx.vercel.app"
+}));
 app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
