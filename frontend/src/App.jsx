@@ -29,7 +29,9 @@ function App() {
   async function addTask() {
     if (inputValue.trim() !== "") {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}api/tasks`, {
+        const url = `${import.meta.env.VITE_API_URL}api/tasks`
+        console.log("POST URL" , url);
+        const response = await fetch(url, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -38,6 +40,7 @@ function App() {
             task: inputValue.trim(),
           }),
         });
+        console.log("Status", response.status)
         const newTodo = await response.json();
         setTodoList([...todoList, newTodo]);
         setInputValue("");

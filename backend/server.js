@@ -14,7 +14,7 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
 
-app.get("/", async (req, res) => {
+app.get("/api/tasks", async (req, res) => {
   const todos = await Todo.find();
   res.json(todos);
 });
