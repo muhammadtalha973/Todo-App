@@ -14,7 +14,7 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
 
-app.get("/api/tasks", async (req, res) => {
+app.get("/", async (req, res) => {
   const todos = await Todo.find();
   res.json(todos);
 });
@@ -69,6 +69,6 @@ app.delete("/api/tasks/:id", async (req, res) => {
     });
   }
 });
-app.listen(PORT, "0.0.0.0" , () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
 });
