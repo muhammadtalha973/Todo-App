@@ -29,7 +29,7 @@ function App() {
   async function addTask() {
     if (inputValue.trim() !== "") {
       try {
-        const response = await fetch("http://localhost:5000/api/tasks", {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}api/tasks`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -49,7 +49,7 @@ function App() {
 
   async function deleteTask(id) {
     try {
-      const response = await fetch(`http://localhost:5000/api/tasks/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}api/tasks/${id}`, {
         method: "DELETE",
       });
       if (!response.ok) {
@@ -68,7 +68,7 @@ function App() {
       if (!task) {
         return;
       }
-      const response = await fetch(`http://localhost:5000/api/tasks/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}api/tasks/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -94,7 +94,7 @@ function App() {
     }
     try {
       const response = await fetch(
-        `http://localhost:5000/api/tasks/${editId}`,
+        `${import.meta.env.VITE_API_URL}api/tasks/${editId}`,
         {
           method: "PUT",
           headers: {
