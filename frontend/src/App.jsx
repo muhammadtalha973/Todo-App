@@ -126,7 +126,7 @@ function App() {
     <section className="w-full min-h-screen px-4 py-6 grid grid-cols-1 grid-rows-[auto_1fr] justify-items-center gap-y-8 font-caveat">
       <header className="w-full max-w-2xl h-60">
         <img
-          src=".\src\assets\todolist-logo.png"
+          src="./frontend/src/assets/todolist-logo.png"
           alt="todolist-logo"
           className="max-w-full h-full object-contain"
         />
